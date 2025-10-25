@@ -63,6 +63,30 @@ npm run lint
 - **Build Tool:** Vite
 - **Styling:** CSS3 with modern gradients and animations
 - **Deployment:** Static site (can be hosted on GitHub Pages, Netlify, Vercel, etc.)
+- **Docker:** Multi-stage build with nginx (64MB lightweight image)
+
+## Deployment
+
+### Docker Deployment (Recommended for VPS)
+
+Quick start with Docker:
+
+```bash
+docker build -t robbox-site .
+docker run -d -p 80:80 robbox-site
+```
+
+Or with Docker Compose:
+
+```bash
+docker-compose up -d
+```
+
+For detailed Docker deployment instructions, including VPS setup and CI/CD, see [DOCKER_DEPLOYMENT.md](DOCKER_DEPLOYMENT.md).
+
+### GitHub Pages Deployment
+
+For GitHub Pages deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
 ## License
 

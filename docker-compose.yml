@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  robbox-site:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: robbox-site:latest
+    container_name: robbox-site
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
