@@ -1,6 +1,23 @@
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
+  const [currentVideo, setCurrentVideo] = useState(0)
+  const videos = [
+    '/videos/robot-video-1.mp4',
+    '/videos/robot-video-2.mp4',
+    '/videos/robot-video-3.mp4',
+  ]
+
+  useEffect(() => {
+    // Переключение видео каждые 15 секунд
+    const interval = setInterval(() => {
+      setCurrentVideo((prev) => (prev + 1) % videos.length)
+    }, 15000)
+
+    return () => clearInterval(interval)
+  }, [videos.length])
+
   return (
     <div className="app">
       <header className="header">
@@ -20,7 +37,22 @@ function App() {
 
       <main>
         <section className="hero">
-          <div className="container">
+          <div className="hero-background">
+            {videos.map((video, index) => (
+              <video
+                key={video}
+                className={`hero-video ${index === currentVideo ? 'active' : ''}`}
+                autoPlay
+                loop
+                muted
+                playsInline
+              >
+                <source src={video} type="video/mp4" />
+              </video>
+            ))}
+            <div className="hero-overlay"></div>
+          </div>
+          <div className="container hero-content">
             <h2 className="hero-title">Автономный колесный робот-доставщик</h2>
             <p className="hero-subtitle">Образовательная робототехническая платформа на ROS2 для автономной навигации и доставки внутри помещений</p>
             <div className="hero-badges">
