@@ -5,13 +5,15 @@ function App() {
     <div className="app">
       <header className="header">
         <div className="container">
-          <h1 className="logo">РОББОКС</h1>
+          <div className="logo">
+            <img src="/logo.svg" alt="РОББОКС" className="logo-image" />
+          </div>
           <nav className="nav">
-            <a href="#about">About</a>
-            <a href="#goals">Goals</a>
-            <a href="#features">Features</a>
-            <a href="#hardware">Hardware</a>
-            <a href="#related">Related Projects</a>
+            <a href="#about">О проекте</a>
+            <a href="#goals">Цели</a>
+            <a href="#features">Возможности</a>
+            <a href="#hardware">Железо</a>
+            <a href="#related">Репозитории</a>
           </nav>
         </div>
       </header>
@@ -19,8 +21,8 @@ function App() {
       <main>
         <section className="hero">
           <div className="container">
-            <h2 className="hero-title">Autonomous Wheeled Delivery Robot</h2>
-            <p className="hero-subtitle">Educational ROS2-based robotics platform for indoor autonomous navigation and delivery</p>
+            <h2 className="hero-title">Автономный колесный робот-доставщик</h2>
+            <p className="hero-subtitle">Образовательная робототехническая платформа на ROS2 для автономной навигации и доставки внутри помещений</p>
             <div className="hero-badges">
               <a href="https://github.com/krikz/rob_box_project" target="_blank" rel="noopener noreferrer" className="badge">
                 <span className="badge-icon">📦</span> GitHub
@@ -37,39 +39,51 @@ function App() {
 
         <section id="about" className="section">
           <div className="container">
-            <h2 className="section-title">About the Project</h2>
+            <h2 className="section-title">О проекте</h2>
             <p className="section-description">
-              ROBBOX is an educational autonomous robot project designed for learning ROS2 robotics development. 
-              The project covers fundamental aspects of robotic systems development including motion control, 
-              sensor data processing, and user interaction.
+              РОББОКС - это образовательный проект автономного робота, созданный для изучения работы с ROS2. 
+              Проект охватывает основные аспекты разработки роботизированных систем, включая управление движением, 
+              обработку данных с датчиков и взаимодействие с пользователем.
             </p>
+            
+            <div className="demo-section">
+              <div className="demo-item">
+                <img src="/rviz-demo.gif" alt="Демонстрация робота в RViz" className="demo-gif" />
+                <p className="demo-caption">Визуализация робота в RViz - модель с вращающимися колесами</p>
+              </div>
+              <div className="demo-item">
+                <img src="/led-animation.gif" alt="Анимация LED матриц" className="demo-gif" />
+                <p className="demo-caption">Редактор анимаций для NeoPixel матриц - эффект торможения</p>
+              </div>
+            </div>
+
             <div className="status-grid">
               <div className="status-item">
                 <span className="status-icon">✅</span>
                 <div>
-                  <h3>SLAM Mapping</h3>
-                  <p>RTAB-Map with OAK-D + LSLIDAR</p>
+                  <h3>SLAM картографирование</h3>
+                  <p>RTAB-Map с OAK-D + LSLIDAR</p>
                 </div>
               </div>
               <div className="status-item">
                 <span className="status-icon">✅</span>
                 <div>
-                  <h3>Motor Control</h3>
-                  <p>VESC controllers via CAN bus</p>
+                  <h3>Управление двигателями</h3>
+                  <p>VESC контроллеры через CAN шину</p>
                 </div>
               </div>
               <div className="status-item">
                 <span className="status-icon">✅</span>
                 <div>
-                  <h3>LED Indication</h3>
-                  <p>NeoPixel matrix control</p>
+                  <h3>LED индикация</h3>
+                  <p>Управление NeoPixel матрицами</p>
                 </div>
               </div>
               <div className="status-item">
                 <span className="status-icon">✅</span>
                 <div>
-                  <h3>Voice Assistant</h3>
-                  <p>Speech recognition & TTS</p>
+                  <h3>Голосовой ассистент</h3>
+                  <p>Распознавание речи и синтез</p>
                 </div>
               </div>
             </div>
@@ -78,48 +92,48 @@ function App() {
 
         <section id="goals" className="section section-alt">
           <div className="container">
-            <h2 className="section-title">Project Goals</h2>
+            <h2 className="section-title">Цели проекта</h2>
             
             <div className="goal-phase">
-              <h3 className="phase-title">Phase 1: Autonomous Navigation</h3>
+              <h3 className="phase-title">Этап 1: Автономная навигация</h3>
               <div className="goal-list">
                 <div className="goal-item completed">
                   <span className="goal-check">✓</span>
-                  <span>Map building using RTAB-Map SLAM</span>
+                  <span>Построение карты помещения с помощью RTAB-Map SLAM</span>
                 </div>
                 <div className="goal-item completed">
                   <span className="goal-check">✓</span>
-                  <span>Robot localization on the map</span>
+                  <span>Локализация робота на карте</span>
                 </div>
                 <div className="goal-item completed">
                   <span className="goal-check">✓</span>
-                  <span>Path planning and navigation</span>
+                  <span>Планирование траектории и навигация</span>
                 </div>
                 <div className="goal-item in-progress">
                   <span className="goal-check">○</span>
-                  <span>Map annotation (POIs, delivery zones)</span>
+                  <span>Разметка карты (точки интереса, зоны доставки)</span>
                 </div>
               </div>
             </div>
 
             <div className="goal-phase">
-              <h3 className="phase-title">Phase 2: Delivery Business Process</h3>
+              <h3 className="phase-title">Этап 2: Бизнес-процесс доставки</h3>
               <div className="goal-list">
                 <div className="goal-item planned">
                   <span className="goal-check">□</span>
-                  <span>Client application for robot calling</span>
+                  <span>Клиентское приложение для вызова робота</span>
                 </div>
                 <div className="goal-item planned">
                   <span className="goal-check">□</span>
-                  <span>Delivery of items from point A to point B</span>
+                  <span>Доставка предметов из точки A в точку B</span>
                 </div>
                 <div className="goal-item planned">
                   <span className="goal-check">□</span>
-                  <span>Docking station for automatic charging</span>
+                  <span>Док-станция для автоматической подзарядки</span>
                 </div>
                 <div className="goal-item in-progress">
                   <span className="goal-check">○</span>
-                  <span>Voice assistant for user interaction</span>
+                  <span>Голосовой ассистент для взаимодействия</span>
                 </div>
               </div>
             </div>
@@ -128,37 +142,37 @@ function App() {
 
         <section id="features" className="section">
           <div className="container">
-            <h2 className="section-title">Key Features</h2>
+            <h2 className="section-title">Ключевые возможности</h2>
             <div className="features-grid">
               <div className="feature-card">
                 <div className="feature-icon">🗺️</div>
-                <h3>SLAM & Mapping</h3>
-                <p>Real-time 3D mapping using RTAB-Map with RGB-D camera and 2D LiDAR for precise indoor navigation</p>
+                <h3>SLAM и картографирование</h3>
+                <p>Построение 3D-карты в реальном времени с помощью RTAB-Map, RGB-D камеры и 2D лидара для точной навигации в помещении</p>
               </div>
               <div className="feature-card">
                 <div className="feature-icon">⚙️</div>
-                <h3>Motor Control</h3>
-                <p>Four VESC controllers connected via CAN bus for precise 4-wheel independent motor control</p>
+                <h3>Управление двигателями</h3>
+                <p>Четыре контроллера VESC, соединенные через CAN шину для точного независимого управления 4 колесами</p>
               </div>
               <div className="feature-card">
                 <div className="feature-icon">💡</div>
-                <h3>LED Display</h3>
-                <p>Multiple NeoPixel matrices for visual feedback - headlights and main 5×25 display panel</p>
+                <h3>LED дисплей</h3>
+                <p>Несколько NeoPixel матриц для визуальной обратной связи - фары и основная панель дисплея 5×25</p>
               </div>
               <div className="feature-card">
                 <div className="feature-icon">📡</div>
-                <h3>Sensor Hub</h3>
-                <p>ESP32-based sensor board with temperature, humidity, weight sensors, and fan control</p>
+                <h3>Сенсорный хаб</h3>
+                <p>Сенсорная плата на ESP32 с датчиками температуры, влажности, веса и управлением вентиляторами</p>
               </div>
               <div className="feature-card">
                 <div className="feature-icon">🎤</div>
-                <h3>Voice Assistant</h3>
-                <p>ReSpeaker microphone array for speech recognition and natural voice interaction</p>
+                <h3>Голосовой ассистент</h3>
+                <p>Микрофонная решетка ReSpeaker для распознавания речи и естественного голосового взаимодействия</p>
               </div>
               <div className="feature-card">
                 <div className="feature-icon">📊</div>
-                <h3>Monitoring System</h3>
-                <p>Grafana, Prometheus, and Loki stack for comprehensive robot health monitoring</p>
+                <h3>Система мониторинга</h3>
+                <p>Стек Grafana, Prometheus и Loki для комплексного мониторинга состояния робота</p>
               </div>
             </div>
           </div>
@@ -166,86 +180,86 @@ function App() {
 
         <section id="hardware" className="section section-alt">
           <div className="container">
-            <h2 className="section-title">Technical Specifications</h2>
+            <h2 className="section-title">Технические характеристики</h2>
             
             <div className="hardware-grid">
               <div className="hardware-category">
-                <h3 className="category-title">Mechanics & Drive</h3>
+                <h3 className="category-title">Механика и привод</h3>
                 <ul className="spec-list">
-                  <li><strong>Wheels:</strong> 4×10" (electric scooter wheels)</li>
-                  <li><strong>Controllers:</strong> 4× VESC (CAN bus)</li>
-                  <li><strong>Hardware Interface:</strong> <a href="https://github.com/krikz/vesc_nexus" target="_blank" rel="noopener noreferrer">vesc_nexus</a> ROS2 driver</li>
-                  <li><strong>CAN Shield:</strong> Mounted on Main Pi</li>
+                  <li><strong>Колеса:</strong> 4×10" (от электросамоката)</li>
+                  <li><strong>Контроллеры:</strong> 4× VESC (CAN шина)</li>
+                  <li><strong>Интерфейс:</strong> <a href="https://github.com/krikz/vesc_nexus" target="_blank" rel="noopener noreferrer">vesc_nexus</a> ROS2 драйвер</li>
+                  <li><strong>CAN Shield:</strong> Установлен на Main Pi</li>
                 </ul>
               </div>
 
               <div className="hardware-category">
-                <h3 className="category-title">Computing</h3>
+                <h3 className="category-title">Бортовые компьютеры</h3>
                 <ul className="spec-list">
                   <li><strong>Main Pi:</strong> Raspberry Pi 5, 15GB RAM
                     <ul className="sub-list">
                       <li>RTAB-Map SLAM</li>
-                      <li>Navigation & Planning</li>
-                      <li>LSLIDAR driver</li>
-                      <li>Perception services</li>
+                      <li>Навигация и планирование</li>
+                      <li>Драйвер LSLIDAR</li>
+                      <li>Сервисы восприятия</li>
                     </ul>
                   </li>
                   <li><strong>Vision Pi:</strong> Raspberry Pi 5, 8GB RAM
                     <ul className="sub-list">
-                      <li>OAK-D-Lite driver</li>
-                      <li>AprilTag detection</li>
+                      <li>Драйвер OAK-D-Lite</li>
+                      <li>Детектор AprilTag</li>
                       <li>Raspberry Pi Camera</li>
-                      <li>Voice assistant (ReSpeaker)</li>
+                      <li>Голосовой ассистент (ReSpeaker)</li>
                     </ul>
                   </li>
                 </ul>
               </div>
 
               <div className="hardware-category">
-                <h3 className="category-title">Sensors</h3>
+                <h3 className="category-title">Датчики</h3>
                 <ul className="spec-list">
-                  <li><strong>Camera:</strong> OAK-D-Lite (RGB + Stereo Depth)</li>
-                  <li><strong>Pi Camera:</strong> Ceiling-based localization</li>
-                  <li><strong>LiDAR:</strong> LSLIDAR N10 (360° 2D)</li>
-                  <li><strong>Microphone:</strong> ReSpeaker Mic Array v2.0</li>
-                  <li><strong>Sensor Board:</strong> ESP32 with micro-ROS
+                  <li><strong>Камера:</strong> OAK-D-Lite (RGB + стерео глубина)</li>
+                  <li><strong>Pi Camera:</strong> Локализация по потолку</li>
+                  <li><strong>Лидар:</strong> LSLIDAR N10 (360° 2D)</li>
+                  <li><strong>Микрофон:</strong> ReSpeaker Mic Array v2.0</li>
+                  <li><strong>Сенсорная плата:</strong> ESP32 с micro-ROS
                     <ul className="sub-list">
-                      <li>AHT30 temperature/humidity sensors</li>
-                      <li>HX711 load cell (weight)</li>
-                      <li>2× PWM fans with tachometer</li>
+                      <li>Датчики температуры/влажности AHT30</li>
+                      <li>Тензодатчик HX711 (вес)</li>
+                      <li>2× вентилятора PWM с тахометром</li>
                     </ul>
                   </li>
                 </ul>
               </div>
 
               <div className="hardware-category">
-                <h3 className="category-title">Indication</h3>
+                <h3 className="category-title">Индикация</h3>
                 <ul className="spec-list">
-                  <li><strong>LED Control:</strong> <a href="https://github.com/krikz/ros2leds" target="_blank" rel="noopener noreferrer">ros2leds</a> ROS2 driver</li>
-                  <li><strong>Headlights:</strong> 4× NeoPixel 8×8 matrices</li>
-                  <li><strong>Main Display:</strong> 5× NeoPixel 5×5 (5×25 total)</li>
-                  <li><strong>Compositor:</strong> Combines panels into logical groups</li>
+                  <li><strong>Управление LED:</strong> <a href="https://github.com/krikz/ros2leds" target="_blank" rel="noopener noreferrer">ros2leds</a> ROS2 драйвер</li>
+                  <li><strong>Фары:</strong> 4× NeoPixel матрицы 8×8</li>
+                  <li><strong>Основной дисплей:</strong> 5× NeoPixel 5×5 (всего 5×25)</li>
+                  <li><strong>Композитор:</strong> Объединяет панели в логические группы</li>
                 </ul>
               </div>
 
               <div className="hardware-category">
-                <h3 className="category-title">Software Stack</h3>
+                <h3 className="category-title">Программный стек</h3>
                 <ul className="spec-list">
-                  <li><strong>OS:</strong> Ubuntu 24.04.2 LTS</li>
-                  <li><strong>Framework:</strong> ROS 2 Humble Hawksbill</li>
+                  <li><strong>ОС:</strong> Ubuntu 24.04.2 LTS</li>
+                  <li><strong>Фреймворк:</strong> ROS 2 Humble Hawksbill</li>
                   <li><strong>Middleware:</strong> Zenoh DDS (rmw_zenoh_cpp)</li>
-                  <li><strong>SLAM:</strong> RTAB-Map (RGB-D + 2D LiDAR)</li>
-                  <li><strong>Camera:</strong> DepthAI for OAK-D-Lite</li>
-                  <li><strong>Containerization:</strong> Docker + Docker Compose</li>
+                  <li><strong>SLAM:</strong> RTAB-Map (RGB-D + 2D лидар)</li>
+                  <li><strong>Камера:</strong> DepthAI для OAK-D-Lite</li>
+                  <li><strong>Контейнеризация:</strong> Docker + Docker Compose</li>
                 </ul>
               </div>
 
               <div className="hardware-category">
-                <h3 className="category-title">Communication</h3>
+                <h3 className="category-title">Коммуникация</h3>
                 <ul className="spec-list">
                   <li><strong>Middleware:</strong> Zenoh DDS</li>
-                  <li><strong>Network:</strong> WiFi router D-Link DIR-320</li>
-                  <li><strong>Inter-Pi Link:</strong> Zenoh router for traffic optimization</li>
+                  <li><strong>Сеть:</strong> WiFi роутер D-Link DIR-320</li>
+                  <li><strong>Связь между Pi:</strong> Zenoh router для оптимизации трафика</li>
                 </ul>
               </div>
             </div>
@@ -254,27 +268,27 @@ function App() {
 
         <section id="related" className="section">
           <div className="container">
-            <h2 className="section-title">Related Repositories</h2>
+            <h2 className="section-title">Связанные репозитории</h2>
             <div className="repos-grid">
               <a href="https://github.com/krikz/rob_box_project" target="_blank" rel="noopener noreferrer" className="repo-card">
                 <h3>rob_box_project</h3>
-                <p>Main project repository with full ROS2 stack, Docker configuration, and comprehensive documentation</p>
-                <span className="repo-link">View on GitHub →</span>
+                <p>Основной репозиторий проекта с полным стеком ROS2, конфигурацией Docker и подробной документацией</p>
+                <span className="repo-link">Смотреть на GitHub →</span>
               </a>
               <a href="https://github.com/krikz/vesc_nexus" target="_blank" rel="noopener noreferrer" className="repo-card">
                 <h3>vesc_nexus</h3>
-                <p>ROS2 driver for VESC motor controllers via CAN bus. Supports multiple VESC units with odometry publishing</p>
-                <span className="repo-link">View on GitHub →</span>
+                <p>ROS2 драйвер для моторных контроллеров VESC через CAN шину. Поддержка нескольких VESC с публикацией одометрии</p>
+                <span className="repo-link">Смотреть на GitHub →</span>
               </a>
               <a href="https://github.com/krikz/ros2leds" target="_blank" rel="noopener noreferrer" className="repo-card">
                 <h3>ros2leds</h3>
-                <p>ROS2 driver for NeoPixel LED matrices via SPI. Features compositor for combining multiple panels</p>
-                <span className="repo-link">View on GitHub →</span>
+                <p>ROS2 драйвер для NeoPixel LED матриц через SPI. Включает композитор для объединения нескольких панелей</p>
+                <span className="repo-link">Смотреть на GitHub →</span>
               </a>
               <a href="https://github.com/krikz/robot_sensor_hub" target="_blank" rel="noopener noreferrer" className="repo-card">
                 <h3>robot_sensor_hub</h3>
-                <p>ESP32 sensor board with micro-ROS. Temperature, humidity, weight sensors, and fan control</p>
-                <span className="repo-link">View on GitHub →</span>
+                <p>Сенсорная плата ESP32 с micro-ROS. Датчики температуры, влажности, веса и управление вентиляторами</p>
+                <span className="repo-link">Смотреть на GitHub →</span>
               </a>
             </div>
           </div>
@@ -283,13 +297,13 @@ function App() {
 
       <footer className="footer">
         <div className="container">
-          <p>ROBBOX - Educational Autonomous Robot Project</p>
+          <p>РОББОКС - Образовательный проект автономного робота</p>
           <p>
             <a href="https://github.com/krikz/rob_box_project" target="_blank" rel="noopener noreferrer">
               GitHub
             </a>
             {' • '}
-            Built with ROS 2 Humble • Powered by Zenoh DDS
+            Создано с ROS 2 Humble • На базе Zenoh DDS
           </p>
         </div>
       </footer>
