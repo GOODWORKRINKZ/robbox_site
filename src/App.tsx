@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type FormEvent } from 'react'
 import './App.css'
 
 function App() {
@@ -10,7 +10,6 @@ function App() {
   ]
 
   useEffect(() => {
-    // Переключение видео каждые 15 секунд
     const interval = setInterval(() => {
       setCurrentVideo((prev) => (prev + 1) % videos.length)
     }, 15000)
@@ -18,19 +17,30 @@ function App() {
     return () => clearInterval(interval)
   }, [videos.length])
 
+  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const subject = encodeURIComponent(String(data.get('subject') ?? 'Сообщение с сайта РОББОКС.ТЕХ'))
+    const body = encodeURIComponent(
+      `${String(data.get('message') ?? '')}\n\n— ${String(data.get('name') ?? '')} (${String(data.get('email') ?? '')})`,
+    )
+    window.location.href = `mailto:contact@robbox.tech?subject=${subject}&body=${body}`
+  }
+
   return (
     <div className="app">
       <header className="header">
         <div className="container">
           <div className="logo">
-            <img src="/logo.svg" alt="РОББОКС" className="logo-image" />
+            <img src="/logo.svg" alt="РОББОКС.ТЕХ" className="logo-image" />
           </div>
           <nav className="nav">
-            <a href="#about">О проекте</a>
-            <a href="#goals">Цели</a>
-            <a href="#features">Возможности</a>
-            <a href="#hardware">Железо</a>
-            <a href="#related">Репозитории</a>
+            <a href="#platform">Платформа</a>
+            <a href="#projects">Проекты</a>
+            <a href="#modules">Модули</a>
+            <a href="#roadmap">Планы</a>
+            <a href="#demo">Демо</a>
+            <a href="#contact">Контакты</a>
           </nav>
         </div>
       </header>
@@ -53,275 +63,238 @@ function App() {
             <div className="hero-overlay"></div>
           </div>
           <div className="container hero-content">
-            <h2 className="hero-title">Автономный колесный робот-доставщик</h2>
-            <p className="hero-subtitle">Образовательная робототехническая платформа на ROS2 для автономной навигации и доставки внутри помещений</p>
-            <div className="hero-badges">
-              <a href="https://github.com/krikz/rob_box_project" target="_blank" rel="noopener noreferrer" className="badge">
-                <span className="badge-icon">📦</span> GitHub
-              </a>
-              <span className="badge">
-                <span className="badge-icon">🤖</span> ROS 2 Humble
-              </span>
-              <span className="badge">
-                <span className="badge-icon">⚡</span> Zenoh DDS
-              </span>
+            <h2 className="hero-title">Доступная робоплатформа</h2>
+            <p className="hero-subtitle">
+              Собираем доступный наземный робототехнический комплекс и сервисы для его управления —
+              от дешёвой базы до автономного робота.
+            </p>
+            <div className="hero-stats">
+              <div className="stat-item">
+                <span className="stat-number">до 100К ₽</span>
+                <span className="stat-label">стоимость базового модуля</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">МОДУЛЬНО</span>
+                <span className="stat-label">навесные модули</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">АВТОНОМНО</span>
+                <span className="stat-label">SLAM и задания</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-number">УДАЛЁННО</span>
+                <span className="stat-label">веб и VR</span>
+              </div>
+            </div>
+            <div className="hero-buttons">
+              <a href="#contact" className="btn btn-primary">Написать нам</a>
+              <a href="#projects" className="btn btn-secondary">Смотреть проекты</a>
             </div>
           </div>
         </section>
 
-        <section id="about" className="section">
+        <section id="platform" className="section">
           <div className="container">
-            <h2 className="section-title">О проекте</h2>
-            <p className="section-description">
-              РОББОКС - это образовательный проект автономного робота, созданный для изучения работы с ROS2. 
-              Проект охватывает основные аспекты разработки роботизированных систем, включая управление движением, 
-              обработку данных с датчиков и взаимодействие с пользователем.
-            </p>
-            
+            <h2 className="section-title">Платформа</h2>
+            <p className="section-description">Три уровня одной системы — от простой базы до автономного комплекса</p>
+            <div className="platform-schema">
+              <div className="platform-step">
+                <div className="platform-step-number">01</div>
+                <h3>База</h3>
+                <p>Доступная подвижная платформа: моторы, колёса, корпус и минимум электроники для управления.</p>
+              </div>
+              <div className="platform-arrow">→</div>
+              <div className="platform-step">
+                <div className="platform-step-number">02</div>
+                <h3>Навесные модули</h3>
+                <p>Оборудование под конкретную задачу: покос, уборка, доставка, инструменты.</p>
+              </div>
+              <div className="platform-arrow">→</div>
+              <div className="platform-step">
+                <div className="platform-step-number">03</div>
+                <h3>Модуль автономности</h3>
+                <p>SLAM, планирование маршрута и LLM-агенты: робот получает задание и выполняет его сам.</p>
+              </div>
+            </div>
+            <p className="platform-note">Одна база — много задач: меняете навесное оборудование и подключаете автономность по мере необходимости.</p>
+          </div>
+        </section>
+
+        <section id="projects" className="section section-alt">
+          <div className="container">
+            <h2 className="section-title">Проекты</h2>
+            <p className="section-description">Два направления одной команды — железо и софт</p>
+            <div className="projects-grid">
+              <div className="project-card hardware">
+                <span className="project-tag">ЖЕЛЕЗО</span>
+                <h3>BiBa</h3>
+                <p className="project-subtitle">Приводной роботизированный модуль (ПРМ-2к)</p>
+                <p>Двухколёсная приводная база — самое доступное решение для перемещения грузов. Вес около 20 кг, управление по радиоканалу, модульная линейка под разные задачи.</p>
+                <ul>
+                  <li>Радиоуправление ExpressLRS/CRSF</li>
+                  <li>Линейка насадок: складская и садовая тележка, привод для газонокосилки</li>
+                  <li>Вес ~20 кг — компактнее аналогов</li>
+                </ul>
+                <span className="project-status in-progress">В разработке</span>
+              </div>
+              <div className="project-card software">
+                <span className="project-tag">СОФТ</span>
+                <h3>РОББОКС</h3>
+                <p className="project-subtitle">Автономный ровер-доставщик</p>
+                <p>Автономная доставка внутри помещений на стеке ROS2: SLAM-навигация, голосовое взаимодействие и распределённая архитектура на двух Raspberry Pi 5.</p>
+                <ul>
+                  <li>Автономная навигация: SLAM (RTAB-Map) + Nav2</li>
+                  <li>Голосовой ассистент и LLM</li>
+                  <li>Образовательная версия для изучения ROS2</li>
+                </ul>
+                <span className="project-status in-progress">В разработке</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="modules" className="section">
+          <div className="container">
+            <h2 className="section-title">Модули и задачи</h2>
+            <p className="section-description">Что платформа делает уже сейчас и что будет дальше</p>
+            <div className="features-grid">
+              <div className="feature-card">
+                <h3>Удалённое управление</h3>
+                <p>Управление роботом через веб и VR-очки: авторизация и руление из любого места.</p>
+                <span className="feature-status in-progress">В работе</span>
+              </div>
+              <div className="feature-card">
+                <h3>Доставка внутри помещений</h3>
+                <p>Ровер довозит предметы из точки A в точку B по заранее построенной карте помещения.</p>
+                <span className="feature-status in-progress">Пилот</span>
+              </div>
+              <div className="feature-card">
+                <h3>Покос травы</h3>
+                <p>Навесной модуль косилки: задание на участок и автономный покос без участия человека.</p>
+                <span className="feature-status planned">В планах</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="roadmap" className="section section-alt">
+          <div className="container">
+            <h2 className="section-title">Дорожная карта</h2>
+            <p className="section-description">Этапы развития платформы</p>
+            <div className="roadmap">
+              <div className="roadmap-step">
+                <div className="roadmap-number">1</div>
+                <div className="roadmap-body">
+                  <h3>Базовая платформа</h3>
+                  <p>Минимальная дешёвая подвижная единица — BiBa.</p>
+                </div>
+                <span className="roadmap-status in-progress">В работе</span>
+              </div>
+              <div className="roadmap-step">
+                <div className="roadmap-number">2</div>
+                <div className="roadmap-body">
+                  <h3>Навесные модули</h3>
+                  <p>Оборудование под задачи: покос, уборка, доставка, инструменты.</p>
+                </div>
+                <span className="roadmap-status planned">В планах</span>
+              </div>
+              <div className="roadmap-step">
+                <div className="roadmap-number">3</div>
+                <div className="roadmap-body">
+                  <h3>Автономность</h3>
+                  <p>SLAM, планирование и LLM-агенты — стек РОББОКС.</p>
+                </div>
+                <span className="roadmap-status in-progress">В работе</span>
+              </div>
+              <div className="roadmap-step">
+                <div className="roadmap-number">4</div>
+                <div className="roadmap-body">
+                  <h3>Сервисы управления</h3>
+                  <p>Веб- и VR-доступ, удалённое руление и мониторинг.</p>
+                </div>
+                <span className="roadmap-status planned">В планах</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="demo" className="section">
+          <div className="container">
+            <h2 className="section-title">Демонстрация</h2>
+            <p className="section-description">Живые кадры работы платформы</p>
             <div className="demo-section">
               <div className="demo-item">
                 <img src="/rviz-demo.gif" alt="Демонстрация робота в RViz" className="demo-gif" />
-                <p className="demo-caption">Визуализация робота в RViz - модель с вращающимися колесами</p>
+                <p className="demo-caption">Визуализация робота в RViz — модель с вращающимися колёсами</p>
               </div>
               <div className="demo-item">
                 <img src="/led-animation.gif" alt="Анимация LED матриц" className="demo-gif" />
-                <p className="demo-caption">Редактор анимаций для NeoPixel матриц - эффект торможения</p>
+                <p className="demo-caption">Редактор анимаций для NeoPixel матриц — эффект торможения</p>
               </div>
-            </div>
-
-            <div className="status-grid">
-              <div className="status-item">
-                <span className="status-icon">✅</span>
-                <div>
-                  <h3>SLAM картографирование</h3>
-                  <p>RTAB-Map с OAK-D + LSLIDAR</p>
-                </div>
+              <div className="demo-item">
+                <video className="demo-gif" controls muted playsInline preload="metadata">
+                  <source src="/videos/biba-mowing-timelapse.mp4" type="video/mp4" />
+                </video>
+                <p className="demo-caption">Таймлапс испытаний BiBa — покос газона</p>
               </div>
-              <div className="status-item">
-                <span className="status-icon">✅</span>
-                <div>
-                  <h3>Управление двигателями</h3>
-                  <p>VESC контроллеры через CAN шину</p>
-                </div>
-              </div>
-              <div className="status-item">
-                <span className="status-icon">✅</span>
-                <div>
-                  <h3>LED индикация</h3>
-                  <p>Управление NeoPixel матрицами</p>
-                </div>
-              </div>
-              <div className="status-item">
-                <span className="status-icon">✅</span>
-                <div>
-                  <h3>Голосовой ассистент</h3>
-                  <p>Распознавание речи и синтез</p>
-                </div>
+              <div className="demo-item">
+                <video className="demo-gif" controls muted playsInline preload="metadata">
+                  <source src="/videos/robbox-vendor-demo.mp4" type="video/mp4" />
+                </video>
+                <p className="demo-caption">РОББОКС — комивояжёр: объезжает точки и продаёт товары по голосовой команде</p>
               </div>
             </div>
           </div>
         </section>
 
-        <section id="goals" className="section section-alt">
+        <section id="contact" className="section section-alt">
           <div className="container">
-            <h2 className="section-title">Цели проекта</h2>
-            
-            <div className="goal-phase">
-              <h3 className="phase-title">Этап 1: Автономная навигация</h3>
-              <div className="goal-list">
-                <div className="goal-item completed">
-                  <span className="goal-check">✓</span>
-                  <span>Построение карты помещения с помощью RTAB-Map SLAM</span>
-                </div>
-                <div className="goal-item completed">
-                  <span className="goal-check">✓</span>
-                  <span>Локализация робота на карте</span>
-                </div>
-                <div className="goal-item completed">
-                  <span className="goal-check">✓</span>
-                  <span>Планирование траектории и навигация</span>
-                </div>
-                <div className="goal-item in-progress">
-                  <span className="goal-check">○</span>
-                  <span>Разметка карты (точки интереса, зоны доставки)</span>
+            <h2 className="section-title">Связаться с командой</h2>
+            <div className="contact-content">
+              <div className="contact-info">
+                <h3>Расскажите о вашей задаче</h3>
+                <p>Ищем партнёров, инвесторов и единомышленников. Расскажите, какую задачу вы хотите решить с помощью платформы — обсудим.</p>
+                <div className="contact-links">
+                  <a href="https://t.me/robbox_project" target="_blank" rel="noopener noreferrer" className="contact-link">
+                    <span>Telegram</span>
+                  </a>
+                  <a href="mailto:contact@robbox.tech" className="contact-link">
+                    <span>contact@robbox.tech</span>
+                  </a>
+                  {/* TODO: подставить ссылку на донат */}
+                  <a href="#" className="contact-link">
+                    <span>Поддержать проект</span>
+                  </a>
                 </div>
               </div>
-            </div>
-
-            <div className="goal-phase">
-              <h3 className="phase-title">Этап 2: Бизнес-процесс доставки</h3>
-              <div className="goal-list">
-                <div className="goal-item planned">
-                  <span className="goal-check">□</span>
-                  <span>Клиентское приложение для вызова робота</span>
-                </div>
-                <div className="goal-item planned">
-                  <span className="goal-check">□</span>
-                  <span>Доставка предметов из точки A в точку B</span>
-                </div>
-                <div className="goal-item planned">
-                  <span className="goal-check">□</span>
-                  <span>Док-станция для автоматической подзарядки</span>
-                </div>
-                <div className="goal-item in-progress">
-                  <span className="goal-check">○</span>
-                  <span>Голосовой ассистент для взаимодействия</span>
-                </div>
+              <div className="contact-form">
+                <h3>Написать команде</h3>
+                <form onSubmit={handleContactSubmit}>
+                  <div className="form-group">
+                    <label htmlFor="name">Имя</label>
+                    <input type="text" id="name" name="name" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="email">Email</label>
+                    <input type="email" id="email" name="email" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="subject">Тема</label>
+                    <select id="subject" name="subject" required defaultValue="Инвестиции и сотрудничество">
+                      <option>Инвестиции и сотрудничество</option>
+                      <option>Пилотный проект</option>
+                      <option>Вопрос о платформе</option>
+                      <option>Партнёрство</option>
+                      <option>Другое</option>
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="message">Сообщение</label>
+                    <textarea id="message" name="message" rows={5} required></textarea>
+                  </div>
+                  <button type="submit" className="btn btn-primary">Отправить</button>
+                </form>
               </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="features" className="section">
-          <div className="container">
-            <h2 className="section-title">Ключевые возможности</h2>
-            <div className="features-grid">
-              <div className="feature-card">
-                <div className="feature-icon">🗺️</div>
-                <h3>SLAM и картографирование</h3>
-                <p>Построение 3D-карты в реальном времени с помощью RTAB-Map, RGB-D камеры и 2D лидара для точной навигации в помещении</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">⚙️</div>
-                <h3>Управление двигателями</h3>
-                <p>Четыре контроллера VESC, соединенные через CAN шину для точного независимого управления 4 колесами</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">💡</div>
-                <h3>LED дисплей</h3>
-                <p>Несколько NeoPixel матриц для визуальной обратной связи - фары и основная панель дисплея 5×25</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">📡</div>
-                <h3>Сенсорный хаб</h3>
-                <p>Сенсорная плата на ESP32 с датчиками температуры, влажности, веса и управлением вентиляторами</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">🎤</div>
-                <h3>Голосовой ассистент</h3>
-                <p>Микрофонная решетка ReSpeaker для распознавания речи и естественного голосового взаимодействия</p>
-              </div>
-              <div className="feature-card">
-                <div className="feature-icon">📊</div>
-                <h3>Система мониторинга</h3>
-                <p>Стек Grafana, Prometheus и Loki для комплексного мониторинга состояния робота</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="hardware" className="section section-alt">
-          <div className="container">
-            <h2 className="section-title">Технические характеристики</h2>
-            
-            <div className="hardware-grid">
-              <div className="hardware-category">
-                <h3 className="category-title">Механика и привод</h3>
-                <ul className="spec-list">
-                  <li><strong>Колеса:</strong> 4×10" (от электросамоката)</li>
-                  <li><strong>Контроллеры:</strong> 4× VESC (CAN шина)</li>
-                  <li><strong>Интерфейс:</strong> <a href="https://github.com/krikz/vesc_nexus" target="_blank" rel="noopener noreferrer">vesc_nexus</a> ROS2 драйвер</li>
-                  <li><strong>CAN Shield:</strong> Установлен на Main Pi</li>
-                </ul>
-              </div>
-
-              <div className="hardware-category">
-                <h3 className="category-title">Бортовые компьютеры</h3>
-                <ul className="spec-list">
-                  <li><strong>Main Pi:</strong> Raspberry Pi 5, 15GB RAM
-                    <ul className="sub-list">
-                      <li>RTAB-Map SLAM</li>
-                      <li>Навигация и планирование</li>
-                      <li>Драйвер LSLIDAR</li>
-                      <li>Сервисы восприятия</li>
-                    </ul>
-                  </li>
-                  <li><strong>Vision Pi:</strong> Raspberry Pi 5, 8GB RAM
-                    <ul className="sub-list">
-                      <li>Драйвер OAK-D-Lite</li>
-                      <li>Детектор AprilTag</li>
-                      <li>Raspberry Pi Camera</li>
-                      <li>Голосовой ассистент (ReSpeaker)</li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="hardware-category">
-                <h3 className="category-title">Датчики</h3>
-                <ul className="spec-list">
-                  <li><strong>Камера:</strong> OAK-D-Lite (RGB + стерео глубина)</li>
-                  <li><strong>Pi Camera:</strong> Локализация по потолку</li>
-                  <li><strong>Лидар:</strong> LSLIDAR N10 (360° 2D)</li>
-                  <li><strong>Микрофон:</strong> ReSpeaker Mic Array v2.0</li>
-                  <li><strong>Сенсорная плата:</strong> ESP32 с micro-ROS
-                    <ul className="sub-list">
-                      <li>Датчики температуры/влажности AHT30</li>
-                      <li>Тензодатчик HX711 (вес)</li>
-                      <li>2× вентилятора PWM с тахометром</li>
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="hardware-category">
-                <h3 className="category-title">Индикация</h3>
-                <ul className="spec-list">
-                  <li><strong>Управление LED:</strong> <a href="https://github.com/krikz/ros2leds" target="_blank" rel="noopener noreferrer">ros2leds</a> ROS2 драйвер</li>
-                  <li><strong>Фары:</strong> 4× NeoPixel матрицы 8×8</li>
-                  <li><strong>Основной дисплей:</strong> 5× NeoPixel 5×5 (всего 5×25)</li>
-                  <li><strong>Композитор:</strong> Объединяет панели в логические группы</li>
-                </ul>
-              </div>
-
-              <div className="hardware-category">
-                <h3 className="category-title">Программный стек</h3>
-                <ul className="spec-list">
-                  <li><strong>ОС:</strong> Ubuntu 24.04.2 LTS</li>
-                  <li><strong>Фреймворк:</strong> ROS 2 Humble Hawksbill</li>
-                  <li><strong>Middleware:</strong> Zenoh DDS (rmw_zenoh_cpp)</li>
-                  <li><strong>SLAM:</strong> RTAB-Map (RGB-D + 2D лидар)</li>
-                  <li><strong>Камера:</strong> DepthAI для OAK-D-Lite</li>
-                  <li><strong>Контейнеризация:</strong> Docker + Docker Compose</li>
-                </ul>
-              </div>
-
-              <div className="hardware-category">
-                <h3 className="category-title">Коммуникация</h3>
-                <ul className="spec-list">
-                  <li><strong>Middleware:</strong> Zenoh DDS</li>
-                  <li><strong>Сеть:</strong> WiFi роутер D-Link DIR-320</li>
-                  <li><strong>Связь между Pi:</strong> Zenoh router для оптимизации трафика</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section id="related" className="section">
-          <div className="container">
-            <h2 className="section-title">Связанные репозитории</h2>
-            <div className="repos-grid">
-              <a href="https://github.com/krikz/rob_box_project" target="_blank" rel="noopener noreferrer" className="repo-card">
-                <h3>rob_box_project</h3>
-                <p>Основной репозиторий проекта с полным стеком ROS2, конфигурацией Docker и подробной документацией</p>
-                <span className="repo-link">Смотреть на GitHub →</span>
-              </a>
-              <a href="https://github.com/krikz/vesc_nexus" target="_blank" rel="noopener noreferrer" className="repo-card">
-                <h3>vesc_nexus</h3>
-                <p>ROS2 драйвер для моторных контроллеров VESC через CAN шину. Поддержка нескольких VESC с публикацией одометрии</p>
-                <span className="repo-link">Смотреть на GitHub →</span>
-              </a>
-              <a href="https://github.com/krikz/ros2leds" target="_blank" rel="noopener noreferrer" className="repo-card">
-                <h3>ros2leds</h3>
-                <p>ROS2 драйвер для NeoPixel LED матриц через SPI. Включает композитор для объединения нескольких панелей</p>
-                <span className="repo-link">Смотреть на GitHub →</span>
-              </a>
-              <a href="https://github.com/krikz/robot_sensor_hub" target="_blank" rel="noopener noreferrer" className="repo-card">
-                <h3>robot_sensor_hub</h3>
-                <p>Сенсорная плата ESP32 с micro-ROS. Датчики температуры, влажности, веса и управление вентиляторами</p>
-                <span className="repo-link">Смотреть на GitHub →</span>
-              </a>
             </div>
           </div>
         </section>
@@ -329,13 +302,11 @@ function App() {
 
       <footer className="footer">
         <div className="container">
-          <p>РОББОКС - Образовательный проект автономного робота</p>
+          <p>© 2026 РОББОКС.ТЕХ — доступная робототехническая платформа</p>
           <p>
-            <a href="https://github.com/krikz/rob_box_project" target="_blank" rel="noopener noreferrer">
-              GitHub
-            </a>
+            <a href="https://t.me/robbox_project" target="_blank" rel="noopener noreferrer">Telegram</a>
             {' • '}
-            Создано с ROS 2 Humble • На базе Zenoh DDS
+            <a href="mailto:contact@robbox.tech">Email</a>
           </p>
         </div>
       </footer>
