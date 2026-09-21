@@ -32,7 +32,7 @@ const EYE = { r: R, pupil: 9, cy: CY }
 const EYE_CX = [275, 377] // центры глаз в координатах viewBox
 const PUPIL_MAX = 10
 
-const VIEWBOX = { x: -10, y: -146, w: 1144, h: 201 }
+const VIEWBOX = { x: -10, y: -146, w: 1130, h: 201 }
 
 /** Точка на окружности: угол от «востока», против часовой стрелки. */
 const at = (cx: number, deg: number) => {
@@ -68,11 +68,15 @@ const Be = () => (
   </g>
 )
 
-/** к — стойка и та же дуга, что у с, отодвинутая ровно на толщину штриха. */
+/**
+ * к — стойка и та же дуга, что у с, отодвинутая ровно настолько, чтобы
+ * коснуться стойки внешним краем. Дальше дуга отрывается и читается вторым с,
+ * ближе — наезжает на стойку и проглатывает её.
+ */
 const Ka = () => (
   <g>
     <path d={`M${H} ${CY - R} L${H} ${CY + R}`} />
-    <path d={arc(CX + 28)} />
+    <path d={arc(CX + T)} />
   </g>
 )
 
@@ -116,13 +120,13 @@ const Skeleton = ({ suffix = true }: { suffix?: boolean }) => (
     <g transform="translate(330,0)"><Be /></g>
     <g transform="translate(444,0)"><Omicron /></g>
     <g transform="translate(558,0)"><Ka /></g>
-    <g transform="translate(686,0)"><Es /></g>
+    <g transform="translate(672,0)"><Es /></g>
     {suffix && (
       <>
-        <g transform="translate(780,0)"><Dot /></g>
-        <g transform="translate(810,0)"><Te /></g>
-        <g transform="translate(924,0)"><Ye /></g>
-        <g transform="translate(1038,0)"><Ha /></g>
+        <g transform="translate(766,0)"><Dot /></g>
+        <g transform="translate(796,0)"><Te /></g>
+        <g transform="translate(910,0)"><Ye /></g>
+        <g transform="translate(1024,0)"><Ha /></g>
       </>
     )}
   </g>
@@ -215,7 +219,7 @@ export default function Logo({
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id={`${uid}-ink`} gradientUnits="userSpaceOnUse" x1="0" y1="-140" x2="1060" y2="50">
+        <linearGradient id={`${uid}-ink`} gradientUnits="userSpaceOnUse" x1="0" y1="-140" x2="1045" y2="50">
           <stop offset="0" stopColor="#E9D8FF" />
           <stop offset="0.5" stopColor="#B49CFF" />
           <stop offset="1" stopColor="#8B7BFF" />

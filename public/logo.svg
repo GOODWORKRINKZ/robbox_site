@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -146 1144 201" width="1144" height="201" role="img" aria-label="роббокс.тех">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-10 -146 1130 201" width="1130" height="201" role="img" aria-label="роббокс.тех">
   <title>роббокс.тех</title>
   <defs>
-    <linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="0" y1="-140" x2="1060" y2="50">
+    <linearGradient id="ink" gradientUnits="userSpaceOnUse" x1="0" y1="-140" x2="1045" y2="50">
       <stop offset="0" stop-color="#E9D8FF"/>
       <stop offset="0.5" stop-color="#B49CFF"/>
       <stop offset="1" stop-color="#8B7BFF"/>
@@ -37,24 +37,24 @@
       <!-- к: стойка и отодвинутая дуга с -->
       <g transform="translate(558,0)">
         <path d="M7 -87 L7 -7"/>
-        <path d="M100.7 -77.6 A40 40 0 1 0 100.7 -16.4"/>
+        <path d="M86.7 -77.6 A40 40 0 1 0 86.7 -16.4"/>
       </g>
       <!-- с -->
-      <g transform="translate(686,0)"><path d="M72.7 -77.6 A40 40 0 1 0 72.7 -16.4"/></g>
+      <g transform="translate(672,0)"><path d="M72.7 -77.6 A40 40 0 1 0 72.7 -16.4"/></g>
       <!-- . -->
-      <g transform="translate(780,0)"><path d="M7 -7 L7 -7"/></g>
+      <g transform="translate(766,0)"><path d="M7 -7 L7 -7"/></g>
       <!-- т -->
-      <g transform="translate(810,0)">
+      <g transform="translate(796,0)">
         <path d="M7 -87 L87 -87"/>
         <path d="M47 -87 L47 -7"/>
       </g>
       <!-- е -->
-      <g transform="translate(924,0)">
+      <g transform="translate(910,0)">
         <path d="M87 -47 A40 40 0 1 0 72.7 -16.4"/>
         <path d="M7 -47 L87 -47"/>
       </g>
       <!-- х -->
-      <g transform="translate(1038,0)">
+      <g transform="translate(1024,0)">
         <path d="M7 -87 L79 -7"/>
         <path d="M79 -87 L7 -7"/>
       </g>
@@ -75,5 +75,5 @@
     </style>
   </defs>
 
-  <rect x="-10" y="-146" width="1144" height="201" fill="url(#ink)" mask="url(#tube)"/>
+  <rect x="-10" y="-146" width="1130" height="201" fill="url(#ink)" mask="url(#tube)"/>
 </svg>
