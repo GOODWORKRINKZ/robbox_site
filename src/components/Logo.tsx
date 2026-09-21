@@ -4,9 +4,14 @@ import './Logo.css'
 /*
  * Знак роббокс.тех
  *
- * Строчный неоновый контур. Две буквы б в центре зеркальны друг другу:
- * их тела — скруглённые боксы (РОББОКС = robot + box), внутри — объективы
- * из кольца и зрачка, сверху — брови с наклоном внутрь. Получается лицо.
+ * В основе одна окружность радиуса R — из неё собраны все буквы: о — целая
+ * окружность, р — она же плюс стойка вниз, с — её дуга, к — та же дуга плюс
+ * стойка, е — окружность с перекладиной, б — окружность, вписанная в квадрат
+ * со стороной в её диаметр (роббокс = robot + box).
+ *
+ * Две б в центре зеркальны друг другу: стойки сходятся к центру, перекладины
+ * бровей уходят наружу под прямым углом, а окружности внутри квадратов
+ * превращаются в объективы со зрачком-точкой. Получается лицо.
  *
  * Скелет рисуется штрихом T. В варианте outline тот же скелет рисуется
  * в маске дважды — белым на T и чёрным на T-2C, — и от трубки остаётся
@@ -14,87 +19,110 @@ import './Logo.css'
  * зарастают сами собой, поэтому контур получается общий, а не по буквам.
  */
 
-const T = 16 // толщина трубки
-const C = 3.6 // толщина контура в варианте outline
-const EYE = { r: 34, pupil: 13, cy: -60 }
-const EYE_CX = [324, 500] // центры глаз в координатах viewBox
-const PUPIL_MAX = 7
+const T = 14 // толщина штриха
+const H = T / 2 // полуштрих: на него осевая отступает от видимого края
+const C = 3.2 // толщина контура в варианте outline
+const R = 40 // радиус той самой окружности (по осевой)
+const CX = R + H // центр окружности от видимого левого края буквы
+const CY = -(R + H) // центр окружности над базовой линией
+const BROW = -132 // высота перекладины над базовой линией
+const GAP = 50 // раскрытие дуги у с и к, градусов
 
-const VIEWBOX = { x: -12, y: -206, w: 1292, h: 268 }
+const EYE = { r: R, pupil: 9, cy: CY }
+const EYE_CX = [275, 377] // центры глаз в координатах viewBox
+const PUPIL_MAX = 10
 
-/* --- буквы. Локальная система: базовая линия y=0, визуальный левый край x=0 --- */
+const VIEWBOX = { x: -10, y: -146, w: 1144, h: 201 }
 
+/** Точка на окружности: угол от «востока», против часовой стрелки. */
+const at = (cx: number, deg: number) => {
+  const a = (deg * Math.PI) / 180
+  return `${(cx + R * Math.cos(a)).toFixed(1)} ${(CY - R * Math.sin(a)).toFixed(1)}`
+}
+
+/** Дуга окружности с раскрытием 2·GAP справа — из неё сделаны и с, и к. */
+const arc = (cx: number) => `M${at(cx, GAP)} A${R} ${R} 0 1 0 ${at(cx, -GAP)}`
+
+/* --- буквы. Локальная система: базовая линия y=0, видимый левый край x=0 --- */
+
+/** р — окружность и стойка, уходящая под базовую линию. */
 const Rho = () => (
   <g>
-    <path d="M8 -88 L8 44" />
-    <circle cx="48" cy="-48" r="40" />
+    <path d={`M${H} ${CY - R} L${H} 40`} />
+    <circle cx={CX} cy={CY} r={R} />
   </g>
 )
 
-const Omicron = () => <circle cx="48" cy="-48" r="40" />
+/** о — целая окружность. */
+const Omicron = () => <circle cx={CX} cy={CY} r={R} />
 
-/** б — бокс со скруглёнными углами, стойка и наклонная бровь. */
+/**
+ * б — та же окружность, вписанная в квадрат со стороной в её диаметр,
+ * плюс стойка с перекладиной под прямым углом.
+ */
 const Be = () => (
   <g>
-    <path d="M8 -120 L92 -120 A36 36 0 0 1 128 -84 L128 -36 A36 36 0 0 1 92 0 L44 0 A36 36 0 0 1 8 -36 Z" />
-    <path d="M8 -120 L8 -188 L128 -152" />
-    <circle cx="68" cy={EYE.cy} r={EYE.r} />
+    <rect x={H} y={CY - R} width={R * 2} height={R * 2} />
+    <path d={`M${CX + R} ${BROW} L${H} ${BROW} L${H} ${CY - R}`} />
+    <circle cx={CX} cy={CY} r={R} />
   </g>
 )
 
+/** к — стойка и та же дуга, что у с, отодвинутая ровно на толщину штриха. */
 const Ka = () => (
   <g>
-    <path d="M8 -88 L8 -8" />
-    <path d="M8 -48 L78 -88" />
-    <path d="M8 -48 L78 -8" />
+    <path d={`M${H} ${CY - R} L${H} ${CY + R}`} />
+    <path d={arc(CX + 28)} />
   </g>
 )
 
-const Es = () => <path d="M73.7 -78.6 A40 40 0 1 0 73.7 -17.4" />
+/** с — просто дуга. */
+const Es = () => <path d={arc(CX)} />
 
-const Dot = () => <path d="M8 -8 L8 -8" />
+const Dot = () => <path d={`M${H} ${-H} L${H} ${-H}`} />
 
 const Te = () => (
   <g>
-    <path d="M8 -88 L88 -88" />
-    <path d="M48 -88 L48 -8" />
+    <path d={`M${H} ${CY - R} L${CX + R} ${CY - R}`} />
+    <path d={`M${CX} ${CY - R} L${CX} ${-H}`} />
   </g>
 )
 
+/** е — окружность с перекладиной и вырезом справа внизу. */
 const Ye = () => (
   <g>
-    <path d="M88 -48 A40 40 0 1 0 73.7 -17.4" />
-    <path d="M8 -48 L88 -48" />
+    <path d={`M${CX + R} ${CY} A${R} ${R} 0 1 0 ${at(CX, -GAP)}`} />
+    <path d={`M${H} ${CY} L${CX + R} ${CY}`} />
   </g>
 )
 
 const Ha = () => (
   <g>
-    <path d="M8 -88 L78 -8" />
-    <path d="M78 -88 L8 -8" />
+    <path d={`M${H} ${CY - R} L79 ${-H}`} />
+    <path d={`M79 ${CY - R} L${H} ${-H}`} />
   </g>
 )
 
 /**
  * Весь скелет знака. Рисуется дважды: в белом и чёрном проходе маски.
- * Зеркалится первая б, а не вторая: стойки уходят к центру, а «флаги»
- * бровей расходятся наружу.
+ * Зеркалится первая б, а не вторая: стойки уходят к центру, а перекладины
+ * расходятся наружу.
  */
 const Skeleton = ({ suffix = true }: { suffix?: boolean }) => (
   <g fill="none">
     <g transform="translate(0,0)"><Rho /></g>
-    <g transform="translate(116,0)"><Omicron /></g>
-    <g transform="translate(392,0) scale(-1,1)"><Be /></g>
-    <g transform="translate(432,0)"><Be /></g>
-    <g transform="translate(588,0)"><Omicron /></g>
-    <g transform="translate(704,0)"><Ka /></g>
-    <g transform="translate(810,0)"><Es /></g>
+    <g transform="translate(114,0)"><Omicron /></g>
+    <g transform="translate(322,0) scale(-1,1)"><Be /></g>
+    <g transform="translate(330,0)"><Be /></g>
+    <g transform="translate(444,0)"><Omicron /></g>
+    <g transform="translate(558,0)"><Ka /></g>
+    <g transform="translate(686,0)"><Es /></g>
     {suffix && (
       <>
-        <g transform="translate(918,0)"><Dot /></g>
-        <g transform="translate(950,0)"><Te /></g>
-        <g transform="translate(1066,0)"><Ye /></g>
-        <g transform="translate(1182,0)"><Ha /></g>
+        <g transform="translate(780,0)"><Dot /></g>
+        <g transform="translate(810,0)"><Te /></g>
+        <g transform="translate(924,0)"><Ye /></g>
+        <g transform="translate(1038,0)"><Ha /></g>
       </>
     )}
   </g>
@@ -165,7 +193,8 @@ export default function Logo({
   }, [alive])
 
   const ink = `url(#${uid}-ink)`
-  const strokeProps = { strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const }
+  // острые углы у квадратов и бровей — как на вывеске; торцы оставляем круглыми
+  const strokeProps = { strokeLinecap: 'round' as const, strokeLinejoin: 'miter' as const }
 
   const pupilNodes = (fill: string) =>
     EYE_CX.map((cx, i) => (
@@ -186,7 +215,7 @@ export default function Logo({
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <linearGradient id={`${uid}-ink`} gradientUnits="userSpaceOnUse" x1="0" y1="-190" x2="1180" y2="60">
+        <linearGradient id={`${uid}-ink`} gradientUnits="userSpaceOnUse" x1="0" y1="-140" x2="1060" y2="50">
           <stop offset="0" stopColor="#E9D8FF" />
           <stop offset="0.5" stopColor="#B49CFF" />
           <stop offset="1" stopColor="#8B7BFF" />
