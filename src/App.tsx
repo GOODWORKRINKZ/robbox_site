@@ -1,119 +1,22 @@
-import { useCallback, useEffect, useState, type FormEvent, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
 import Logo from './components/Logo'
+import DraftScene from './components/DraftScene'
+import Assembly from './components/Assembly'
 import './App.css'
 
 const NAV = [
   { id: 'platform', label: 'Платформа' },
   { id: 'projects', label: 'Проекты' },
-  { id: 'modules', label: 'Модули' },
   { id: 'roadmap', label: 'Планы' },
   { id: 'demo', label: 'Демо' },
   { id: 'contact', label: 'Контакты' },
 ]
 
-const HERO_VIDEOS = ['/videos/robot-video-1.mp4', '/videos/robot-video-2.mp4', '/videos/robot-video-3.mp4']
-
-const STATS = [
-  { value: 'до 100К ₽', label: 'стоимость базового модуля' },
-  { value: 'модульно', label: 'навесные модули под задачу' },
-  { value: 'автономно', label: 'SLAM и задания' },
-  { value: 'удалённо', label: 'управление через веб и VR' },
-]
-
-/* --- иконки: тот же монолинейный штрих, что и в знаке --- */
-
-const Icon = ({ children }: { children: ReactNode }) => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-    {children}
-  </svg>
-)
-
-const IconBase = () => (
-  <Icon>
-    <rect x="3" y="9" width="18" height="8" rx="2.5" />
-    <circle cx="7.5" cy="17.5" r="2.5" />
-    <circle cx="16.5" cy="17.5" r="2.5" />
-    <path d="M8 9V6h8v3" />
-  </Icon>
-)
-
-const IconModule = () => (
-  <Icon>
-    <path d="M12 3l7.5 4.2v9.6L12 21l-7.5-4.2V7.2z" />
-    <path d="M12 12l7.5-4.2M12 12v9M12 12L4.5 7.8" />
-  </Icon>
-)
-
-const IconBrain = () => (
-  <Icon>
-    <rect x="5" y="5" width="14" height="14" rx="4" />
-    <circle cx="12" cy="12" r="3" />
-    <path d="M12 2v3M12 19v3M2 12h3M19 12h3" />
-  </Icon>
-)
-
-const IconRemote = () => (
-  <Icon>
-    <rect x="3" y="4" width="18" height="12" rx="2.5" />
-    <path d="M8 20h8M12 16v4" />
-    <circle cx="12" cy="10" r="2.5" />
-  </Icon>
-)
-
-const IconDelivery = () => (
-  <Icon>
-    <path d="M3 8l9-4 9 4v8l-9 4-9-4z" />
-    <path d="M3 8l9 4 9-4M12 12v8" />
-  </Icon>
-)
-
-const IconMow = () => (
-  <Icon>
-    <path d="M4 20c0-4 2.5-6 5-6s5 2 5 6" />
-    <path d="M14 20h6M17 14v6" />
-    <path d="M9 14V9M6 11l3-2 3 2" />
-  </Icon>
-)
-
-/* --- секции-данные --- */
-
-const PLATFORM = [
-  {
-    icon: <IconBase />,
-    title: 'База',
-    text: 'Доступная подвижная платформа: моторы, колёса, корпус и минимум электроники для управления.',
-  },
-  {
-    icon: <IconModule />,
-    title: 'Навесные модули',
-    text: 'Оборудование под конкретную задачу: покос, уборка, доставка, инструменты.',
-  },
-  {
-    icon: <IconBrain />,
-    title: 'Модуль автономности',
-    text: 'SLAM, планирование маршрута и LLM-агенты: робот получает задание и выполняет его сам.',
-  },
-]
-
-const MODULES = [
-  {
-    icon: <IconRemote />,
-    title: 'Удалённое управление',
-    text: 'Управление роботом через веб и VR-очки: авторизация и руление из любого места.',
-    status: { label: 'В работе', tone: 'progress' },
-  },
-  {
-    icon: <IconDelivery />,
-    title: 'Доставка внутри помещений',
-    text: 'Ровер довозит предметы из точки A в точку B по заранее построенной карте помещения.',
-    status: { label: 'Пилот', tone: 'progress' },
-  },
-  {
-    icon: <IconMow />,
-    title: 'Покос травы',
-    text: 'Навесной модуль косилки: задание на участок и автономный покос без участия человека.',
-    status: { label: 'В планах', tone: 'planned' },
-  },
+const SPEC = [
+  { key: 'база', value: 'до 100К ₽' },
+  { key: 'модули', value: 'под задачу' },
+  { key: 'автономность', value: 'SLAM и задания' },
+  { key: 'управление', value: 'веб и VR' },
 ]
 
 const ROADMAP = [
@@ -124,8 +27,8 @@ const ROADMAP = [
 ]
 
 const DEMOS = [
-  { type: 'img', src: '/rviz-demo.gif', caption: 'Визуализация робота в RViz — модель с вращающимися колёсами' },
-  { type: 'img', src: '/led-animation.gif', caption: 'Редактор анимаций для NeoPixel-матриц — эффект торможения' },
+  { type: 'loop', src: '/rviz-demo.mp4', caption: 'Визуализация робота в RViz — модель с вращающимися колёсами' },
+  { type: 'loop', src: '/led-animation.mp4', caption: 'Редактор анимаций для NeoPixel-матриц — эффект торможения' },
   { type: 'video', src: '/videos/biba-mowing-timelapse.mp4', caption: 'Таймлапс испытаний BiBa — покос газона' },
   {
     type: 'video',
@@ -152,7 +55,7 @@ function useReveal() {
           observer.unobserve(entry.target)
         })
       },
-      { rootMargin: '0px 0px -12% 0px', threshold: 0.1 },
+      { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
     )
     nodes.forEach((node) => observer.observe(node))
     return () => observer.disconnect()
@@ -183,6 +86,8 @@ function useActiveSection(ids: string[]) {
   return active
 }
 
+/* --- мелкие компоненты --- */
+
 function Status({ label, tone }: { label: string; tone: string }) {
   return <span className={`status status-${tone}`}>{label}</span>
 }
@@ -191,23 +96,45 @@ function SectionHead({ kicker, title, text }: { kicker: string; title: string; t
   return (
     <div className="section-head" data-reveal>
       <span className="kicker">{kicker}</span>
-      <h2 className="section-title">{title}</h2>
-      {text && <p className="section-text">{text}</p>}
+      <div>
+        <h2 className="section-title">{title}</h2>
+        {text && <p className="section-text">{text}</p>}
+      </div>
     </div>
   )
 }
 
+/** Короткий зацикленный ролик: грузится и играет только когда виден. */
+function LoopVideo({ src, label }: { src: string; label: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video || reduced) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) video.play().catch(() => undefined)
+        else video.pause()
+      },
+      { threshold: 0.25 },
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [reduced])
+
+  return (
+    <video ref={ref} muted loop playsInline preload={reduced ? 'metadata' : 'none'} controls={reduced} aria-label={label}>
+      <source src={src} type="video/mp4" />
+    </video>
+  )
+}
+
 export default function App() {
-  const [currentVideo, setCurrentVideo] = useState(0)
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const active = useActiveSection(NAV.map((item) => item.id))
   useReveal()
-
-  useEffect(() => {
-    const id = setInterval(() => setCurrentVideo((prev) => (prev + 1) % HERO_VIDEOS.length), 15000)
-    return () => clearInterval(id)
-  }, [])
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24)
@@ -245,9 +172,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <div className="backdrop" aria-hidden="true">
-        <div className="backdrop-grid" />
-      </div>
+      <div className="backdrop" aria-hidden="true" />
 
       <header className={`header ${scrolled ? 'is-scrolled' : ''}`}>
         <div className="container header-inner">
@@ -286,54 +211,43 @@ export default function App() {
 
       <main id="top">
         <section className="hero">
-          <div className="hero-media" aria-hidden="true">
-            {HERO_VIDEOS.map((video, index) => (
-              <video
-                key={video}
-                className={`hero-video ${index === currentVideo ? 'is-active' : ''}`}
-                autoPlay
-                loop
-                muted
-                playsInline
-                preload="metadata"
-              >
-                <source src={video} type="video/mp4" />
-              </video>
-            ))}
-            <div className="hero-scrim" />
-          </div>
-
           <div className="container hero-inner">
-            <span className="kicker" data-reveal>
-              наземная робоплатформа · ROS 2 · открытая разработка
-            </span>
+            <div className="hero-copy">
+              <span className="kicker" data-reveal>
+                наземная робоплатформа · ROS 2 · открытая разработка
+              </span>
 
-            <h1 className="hero-mark" data-reveal>
-              <Logo />
-              <span className="visually-hidden">роббокс.тех</span>
-            </h1>
+              <h1 className="hero-mark" data-reveal>
+                <Logo />
+                <span className="visually-hidden">роббокс.тех</span>
+              </h1>
 
-            <p className="hero-title" data-reveal>
-              Доступная робоплатформа — от дешёвой базы до автономного робота
-            </p>
-            <p className="hero-text" data-reveal>
-              Собираем наземный робототехнический комплекс и сервисы для его управления: одна база, сменные навесные
-              модули и автономность, которую подключают по мере необходимости.
-            </p>
+              <p className="hero-title" data-reveal>
+                Одна база — много задач: от дешёвой тележки до автономного робота
+              </p>
+              <p className="hero-text" data-reveal>
+                Собираем наземный робототехнический комплекс и сервисы для его управления: одна приводная база, сменные
+                навесные модули и автономность, которую подключают по мере необходимости.
+              </p>
 
-            <div className="hero-actions" data-reveal>
-              <a href="#contact" className="btn btn-primary">Написать нам</a>
-              <a href="#projects" className="btn btn-ghost">Смотреть проекты</a>
+              <div className="hero-actions" data-reveal>
+                <a href="#contact" className="btn btn-primary">Написать нам</a>
+                <a href="#platform" className="btn btn-ghost">Как устроено</a>
+              </div>
+
+              <dl className="spec" data-reveal>
+                {SPEC.map((item) => (
+                  <div key={item.key}>
+                    <dt>{item.key}</dt>
+                    <dd>{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
             </div>
 
-            <dl className="stats" data-reveal>
-              {STATS.map((stat) => (
-                <div className="stat" key={stat.label}>
-                  <dt className="stat-value">{stat.value}</dt>
-                  <dd className="stat-label">{stat.label}</dd>
-                </div>
-              ))}
-            </dl>
+            <div className="hero-sheet" data-reveal>
+              <DraftScene />
+            </div>
           </div>
         </section>
 
@@ -344,18 +258,7 @@ export default function App() {
               title="Платформа"
               text="Три уровня одной системы: от простой базы до автономного комплекса."
             />
-
-            <div className="steps">
-              {PLATFORM.map((step, index) => (
-                <article className="card step" key={step.title} data-reveal style={{ transitionDelay: `${index * 90}ms` }}>
-                  <span className="step-num">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="card-icon">{step.icon}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                </article>
-              ))}
-            </div>
-
+            <Assembly />
             <p className="note" data-reveal>
               Одна база — много задач: меняете навесное оборудование и подключаете автономность, когда она нужна.
             </p>
@@ -367,9 +270,9 @@ export default function App() {
             <SectionHead kicker="что делаем" title="Проекты" text="Два направления одной команды — железо и софт." />
 
             <div className="projects">
-              <article className="card project project-hw" data-reveal>
+              <article className="frame project" data-reveal>
                 <div className="project-head">
-                  <span className="tag tag-hw">железо</span>
+                  <span className="tag">железо</span>
                   <Status label="В разработке" tone="progress" />
                 </div>
                 <h3>BiBa</h3>
@@ -385,9 +288,9 @@ export default function App() {
                 </ul>
               </article>
 
-              <article className="card project project-sw" data-reveal style={{ transitionDelay: '110ms' }}>
+              <article className="frame project" data-reveal style={{ transitionDelay: '110ms' }}>
                 <div className="project-head">
-                  <span className="tag tag-sw">софт</span>
+                  <span className="tag">софт</span>
                   <Status label="В разработке" tone="progress" />
                 </div>
                 <h3>РОББОКС</h3>
@@ -406,36 +309,15 @@ export default function App() {
           </div>
         </section>
 
-        <section id="modules" className="section">
-          <div className="container">
-            <SectionHead
-              kicker="задачи"
-              title="Модули и задачи"
-              text="Что платформа делает уже сейчас и что будет дальше."
-            />
-
-            <div className="cards-3">
-              {MODULES.map((module, index) => (
-                <article className="card" key={module.title} data-reveal style={{ transitionDelay: `${index * 90}ms` }}>
-                  <span className="card-icon">{module.icon}</span>
-                  <h3>{module.title}</h3>
-                  <p>{module.text}</p>
-                  <Status {...module.status} />
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
         <section id="roadmap" className="section">
           <div className="container">
             <SectionHead kicker="куда идём" title="Дорожная карта" text="Этапы развития платформы." />
 
-            <ol className="roadmap">
+            <ol className="rev">
               {ROADMAP.map((step, index) => (
-                <li className="roadmap-step" key={step.title} data-reveal style={{ transitionDelay: `${index * 80}ms` }}>
-                  <span className="roadmap-dot">{index + 1}</span>
-                  <div className="roadmap-body">
+                <li className="rev-row" key={step.title} data-reveal style={{ transitionDelay: `${index * 80}ms` }}>
+                  <span className="rev-num">{String(index + 1).padStart(2, '0')}</span>
+                  <div className="rev-body">
                     <h3>{step.title}</h3>
                     <p>{step.text}</p>
                   </div>
@@ -452,9 +334,9 @@ export default function App() {
 
             <div className="demos">
               {DEMOS.map((demo, index) => (
-                <figure className="card demo" key={demo.src} data-reveal style={{ transitionDelay: `${(index % 2) * 90}ms` }}>
-                  {demo.type === 'img' ? (
-                    <img src={demo.src} alt={demo.caption} loading="lazy" />
+                <figure className="frame demo" key={demo.src} data-reveal style={{ transitionDelay: `${(index % 2) * 90}ms` }}>
+                  {demo.type === 'loop' ? (
+                    <LoopVideo src={demo.src} label={demo.caption} />
                   ) : (
                     <video controls muted playsInline preload="metadata">
                       <source src={demo.src} type="video/mp4" />
@@ -490,7 +372,7 @@ export default function App() {
                 </div>
               </div>
 
-              <form className="card contact-form" onSubmit={handleContactSubmit} data-reveal style={{ transitionDelay: '110ms' }}>
+              <form className="frame contact-form" onSubmit={handleContactSubmit} data-reveal style={{ transitionDelay: '110ms' }}>
                 <h3>Написать команде</h3>
                 <div className="field">
                   <label htmlFor="name">Имя</label>
@@ -521,16 +403,34 @@ export default function App() {
         </section>
       </main>
 
+      {/* подвал оформлен как штамп чертежа */}
       <footer className="footer">
-        <div className="container footer-inner">
-          <a className="footer-brand" href="#top" aria-label="роббокс.тех — наверх">
-            <Logo variant="solid" alive={false} />
-          </a>
-          <p className="footer-note">© 2026 роббокс.тех — доступная робототехническая платформа</p>
-          <p className="footer-links">
-            <a href="https://t.me/robbox_project" target="_blank" rel="noopener noreferrer">Telegram</a>
-            <a href="mailto:contact@robbox.tech">Email</a>
-          </p>
+        <div className="container">
+          <div className="stamp">
+            <a className="stamp-cell stamp-brand" href="#top" aria-label="роббокс.тех — наверх">
+              <Logo variant="solid" alive={false} />
+            </a>
+            <div className="stamp-cell stamp-title">
+              <span className="stamp-key">наименование</span>
+              Доступная робототехническая платформа
+            </div>
+            <div className="stamp-cell">
+              <span className="stamp-key">масштаб</span>
+              1:1
+            </div>
+            <div className="stamp-cell">
+              <span className="stamp-key">лист</span>
+              1 / 1
+            </div>
+            <div className="stamp-cell stamp-links">
+              <span className="stamp-key">связь</span>
+              <span>
+                <a href="https://t.me/robbox_project" target="_blank" rel="noopener noreferrer">Telegram</a>
+                <a href="mailto:contact@robbox.tech">Email</a>
+              </span>
+            </div>
+          </div>
+          <p className="footer-note">© 2026 роббокс.тех · открытая разработка</p>
         </div>
       </footer>
     </div>

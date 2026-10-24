@@ -1,11 +1,17 @@
 :root {
-  /* фон */
-  --bg: #07070f;
-  --bg-deep: #04040a;
-  --surface: rgba(255, 255, 255, 0.035);
-  --surface-hi: rgba(255, 255, 255, 0.06);
-  --line: rgba(160, 150, 255, 0.14);
-  --line-hi: rgba(167, 139, 250, 0.45);
+  /* лист */
+  --bg: #0a0c15;
+  --sheet: #0e1120;
+  --surface: rgba(228, 224, 255, 0.035);
+  --line: rgba(167, 139, 250, 0.22);
+  --line-hi: rgba(167, 139, 250, 0.55);
+  --grid-minor: rgba(167, 139, 250, 0.055);
+  --grid-major: rgba(167, 139, 250, 0.12);
+
+  /* тушь — линии чертежа */
+  --ink: #e4e0ff;
+  --ink-2: rgba(228, 224, 255, 0.55);
+  --ink-3: rgba(228, 224, 255, 0.26);
 
   /* текст */
   --text: #eceafd;
@@ -13,18 +19,16 @@
   --text-faint: rgba(236, 234, 253, 0.42);
 
   /* акценты */
-  --violet: #7c5cff;
-  --violet-soft: #a78bfa;
-  --violet-pale: #c4b5fd;
-  --cyan: #22d3ee;
+  --accent: #a78bfa;
+  --accent-deep: #7c5cff;
+  --cyan: #67e8f9;
   --amber: #ffb020;
   --green: #34d399;
 
-  --glow: 0 0 24px rgba(124, 92, 255, 0.35);
-  --radius: 20px;
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -44,7 +48,7 @@
 html {
   scroll-behavior: smooth;
   /* чтобы якоря не уезжали под липкую шапку */
-  scroll-padding-top: 96px;
+  scroll-padding-top: 90px;
 }
 
 body {
@@ -66,9 +70,8 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--violet-soft);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
-  border-radius: 6px;
 }
 
 @media (prefers-reduced-motion: reduce) {

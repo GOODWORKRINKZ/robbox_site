@@ -1,0 +1,160 @@
+/*
+ * Чертёжный стиль SVG: монолиния одной толщины в пикселях экрана,
+ * скрытые линии пунктиром, штриховка под 45°, сетка листа.
+ */
+
+.rb-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+}
+
+.rb-svg path,
+.rb-svg rect,
+.rb-svg circle,
+.rb-svg line,
+.rb-svg polyline {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.rb-svg text {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  fill: var(--ink-2);
+}
+
+/* модификаторы отдельных линий */
+.rb-svg .i2 { stroke: var(--ink-2); stroke-width: 1.1; }
+.rb-svg .i3 { stroke: var(--ink-3); stroke-width: 1; }
+.rb-svg .bold { stroke-width: 2.2; }
+.rb-svg .hid { stroke: var(--ink-2); stroke-width: 1.1; stroke-dasharray: 5 4; }
+.rb-svg .solid { fill: var(--sheet); }
+.rb-svg .hatch { fill: url(#rb-hatch); }
+.rb-svg .bbox { stroke: none; fill: none; }
+
+/* призрачный вариант исполнения — пунктир */
+.rb-svg .ghost path,
+.rb-svg .ghost rect,
+.rb-svg .ghost circle {
+  stroke: var(--ink-3);
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+  fill: none;
+}
+
+/* определения */
+.rb-svg .rb-grid-minor { stroke: var(--grid-minor); stroke-width: 1; }
+.rb-svg .rb-grid-major { stroke: var(--grid-major); stroke-width: 1; }
+.rb-svg .rb-hatch-line { stroke: var(--ink-3); stroke-width: 1; }
+.rb-svg .rb-arrow { stroke: var(--ink-2); stroke-width: 1; }
+
+/* слои окружения: дальний бледнее и тоньше, передний толще и прозрачнее */
+.rb-svg .rb-far path,
+.rb-svg .rb-far circle { stroke: var(--ink-3); stroke-width: 1; }
+.rb-svg .rb-ground path { stroke: var(--ink-2); stroke-width: 1.1; }
+.rb-svg .rb-fore path { stroke: var(--ink-2); stroke-width: 2.4; opacity: 0.22; }
+.rb-svg .rb-far .flake { stroke: none; fill: var(--ink-3); }
+.rb-svg .rb-fore .flake { stroke: none; fill: var(--ink-2); opacity: 0.5; }
+
+/* датчики */
+.rb-svg .beam { stroke: var(--cyan); stroke-width: 1.2; stroke-dasharray: 3 3; opacity: 0.55; }
+.rb-svg .led { stroke: var(--cyan); stroke-width: 2.2; stroke-dasharray: 3 8; opacity: 0.85; }
+
+/* ---------- движение ---------- */
+
+.rb-scroll {
+  animation: rb-scroll var(--t) linear infinite;
+}
+
+@keyframes rb-scroll {
+  to { transform: translateX(calc(var(--w) * -1px)); }
+}
+
+/* центр вращения — центр самой фигуры, а не начало координат viewBox */
+.rb-wheel.is-spinning,
+.rb-rotor.is-spinning {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: rb-spin var(--spin, 2.4s) linear infinite;
+}
+
+@keyframes rb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.rb-svg .led.is-running {
+  animation: rb-led 0.5s linear infinite;
+}
+
+@keyframes rb-led {
+  to { stroke-dashoffset: -11; }
+}
+
+.rb-svg .flake {
+  animation: rb-fall var(--t) linear infinite;
+  animation-delay: var(--d);
+}
+
+@keyframes rb-fall {
+  from { transform: translate(0, -20px); }
+  to { transform: translate(-40px, 420px); }
+}
+
+.rb-svg .chunk {
+  animation: rb-chunk 1.35s ease-out infinite;
+  animation-delay: var(--d);
+}
+
+@keyframes rb-chunk {
+  0% { transform: translate(0, 0); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(30px, -34px); opacity: 0; }
+}
+
+.rb-svg .clip {
+  animation: rb-clip 1.2s ease-out infinite;
+  animation-delay: var(--d);
+}
+
+@keyframes rb-clip {
+  0% { transform: translate(0, 0); opacity: 0; }
+  15% { opacity: 1; }
+  100% { transform: translate(-26px, -30px); opacity: 0; }
+}
+
+/* ---------- плоттер: сцена стирается и вычерчивается слева направо ---------- */
+
+.rb-scene.is-enter { animation: rb-wipe-in 0.9s linear both; }
+.rb-scene.is-leave { animation: rb-wipe-out 0.9s linear both; }
+
+@keyframes rb-wipe-in {
+  from { clip-path: inset(0 100% 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes rb-wipe-out {
+  from { clip-path: inset(0 0 0 0); }
+  to { clip-path: inset(0 0 0 100%); }
+}
+
+.rb-plotter {
+  animation: rb-plot 0.9s linear both;
+}
+
+.rb-svg .rb-plotter path {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
+
+@keyframes rb-plot {
+  from { transform: translateX(0); opacity: 1; }
+  92% { opacity: 1; }
+  to { transform: translateX(960px); opacity: 0; }
+}
